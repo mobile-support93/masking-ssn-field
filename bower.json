@@ -1,0 +1,10 @@
+{
+  "name": "masking-ssn-field",
+  "authors": [
+    "anand"
+  ],
+  "description": "",
+  "main": "jquery.maskssn.js",
+  "license": "MIT",
+  "homepage": ""
+}
