@@ -139,7 +139,9 @@ $.fn.extend({
 						submitField.val(input.data($.mask.dataName)());
 					}
 					function checkVal(allow, val) {
+		
 						var i, c, pos, test = (val && replaceStartChars(val, settings.maskedChar, settings.numericMaskedCharEquivalent, settings.maskedCharsLength-2)) || input.data($.mask.dataName)(), lastMatch = -1;
+				
 						for (i = 0, pos = 0; len > i; i++) if (tests[i]) {
 							for (buffer[i] = getPlaceholder(i); pos++ < test.length; )
 							if (c = test.charAt(pos - 1), tests[i].test(c)) {
@@ -184,10 +186,24 @@ $.fn.extend({
 						}
 						input.removeData($.mask.dataName);
 					}).on("focus.mask", function() {
+                         
+                        if( (submitField.val().length == 9) && ($(input).data($.mask.dataName)() == '') ){
+                             var fieldValue = submitField.val();
+                             fieldValue = fieldValue.substring(0,3) + '-' + fieldValue.substring(3,5) + '-' + fieldValue.substring(5,9);
+                                               
+                             var fieldValueList = fieldValue.split("");                        
+                             for(var fieldIndex=0;fieldIndex < fieldValueList.length; fieldIndex++){                             	
+                             	buffer[fieldIndex] = fieldValueList[fieldIndex];
+                             }                             
+                             input.data('dirtyState', true);
+                        }
+                       
 						if (isEditable) {
 							clearTimeout(caretTimeoutId);
 							var pos;
-							focusText = $(input).data($.mask.dataName)(), pos = checkVal(), caretTimeoutId = setTimeout(function() {
+							focusText = $(input).data($.mask.dataName)(),
+							pos = checkVal(),
+							caretTimeoutId = setTimeout(function() {
 								pos == mask.replace("?", "").length ? input.caret(0, pos) : input.caret(pos);
 							}, 10);
 						}
