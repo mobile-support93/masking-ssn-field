@@ -65,7 +65,9 @@ $.fn.extend({
 							c = t;
 						}
 					}
+                    
 					function androidInputEvent(e) {
+
 						var curVal = input.val();
 						if (oldVal && oldVal.length && curVal.length < oldVal.length) {
 							input.val("");
@@ -76,7 +78,10 @@ $.fn.extend({
 							window.setTimeout(function() {
 								input.caret(pos, pos);
 							}, 10);
-							e.stopImmediatePropagation();
+							if(e){
+							  e.stopImmediatePropagation();
+							}
+							
 						}
 						tryFireCompleted();
 						return false;
@@ -92,7 +97,7 @@ $.fn.extend({
 						//TBD: below statement runs the validation on the value of the field, if any.
 						submitField.valid ? submitField.valid() : void 0;
 					}
-					function keydownEvent(e) {
+					function keydownEvent(e) {					
 						if (isEditable) {
 							if(!input.data('dirtyState') && e.keyCode!=9){
 								input.data('dirtyState', true);
@@ -104,7 +109,9 @@ $.fn.extend({
 								oldVal = input.val(), 8 === k || 46 === k || iPhone && 127 === k ? (input.val(""), clearBuffer(0, buffer.length)) : 13 === k ? blurEvent.call(this, e) : 27 === k && (input.val(focusText),
 								input.caret(0, checkVal()), e.preventDefault());
 							}
+
 						}
+
 					}
 					function keypressEvent(e) {
 						if (isEditable) {
@@ -139,7 +146,6 @@ $.fn.extend({
 						submitField.val(input.data($.mask.dataName)());
 					}
 					function checkVal(allow, val) {
-		
 						var i, c, pos, test = (val && replaceStartChars(val, settings.maskedChar, settings.numericMaskedCharEquivalent, settings.maskedCharsLength-2)) || input.data($.mask.dataName)(), lastMatch = -1;
 				
 						for (i = 0, pos = 0; len > i; i++) if (tests[i]) {
@@ -186,7 +192,6 @@ $.fn.extend({
 						}
 						input.removeData($.mask.dataName);
 					}).on("focus.mask", function() {
-                         
                         if( (submitField.val().length == 9) && ($(input).data($.mask.dataName)() == '') ){
                              var fieldValue = submitField.val();
                              fieldValue = fieldValue.substring(0,3) + '-' + fieldValue.substring(3,5) + '-' + fieldValue.substring(5,9);
